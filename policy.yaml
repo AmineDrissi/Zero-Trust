@@ -1,0 +1,14 @@
+# STUB - Ishtiaq owns this file.
+#
+# The single source of truth for who may call whom. Nothing about permissions
+# is hardcoded anywhere else in the project. Deleting a rule here must visibly
+# change what the attack can reach, with no code change.
+
+default: deny
+
+rules: []
+  # - id: R1
+  #   from: gateway
+  #   to: worker
+  #   methods: [POST]
+  #   paths: ["/run"]

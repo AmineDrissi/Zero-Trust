@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Secrets - never commit these. Keys are generated when containers build.
+.env
+*.key
+*.pem
+keys/
+
+# Generated artefacts
+*.bin
+
+# Logs, except the evidence we deliberately capture for the submission
+*.log
+!evidence/*.log
+
+.DS_Store
+Thumbs.db
