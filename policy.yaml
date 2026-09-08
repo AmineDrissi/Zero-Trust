@@ -1,14 +1,23 @@
-# STUB - Ishtiaq owns this file.
-#
-# The single source of truth for who may call whom. Nothing about permissions
-# is hardcoded anywhere else in the project. Deleting a rule here must visibly
-# change what the attack can reach, with no code change.
-
+# Zero Trust access policy — single source of truth for who may call whom.
+# Nothing about permissions is hardcoded anywhere else in the project.
+# Everything not listed here is denied.
 default: deny
 
-rules: []
-  # - id: R1
-  #   from: gateway
-  #   to: worker
-  #   methods: [POST]
-  #   paths: ["/run"]
+rules:
+  - id: R1
+    from: gateway
+    to: worker
+    methods: [POST]
+    paths: ["/run"]
+
+  - id: R2
+    from: worker
+    to: model-store
+    methods: [GET]
+    paths: ["/models/"]
+
+  - id: R3
+    from: worker
+    to: db
+    methods: [QUERY]
+    paths: ["inference_logs:select"]
