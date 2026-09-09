@@ -1,20 +1,8 @@
-"""The attack. One script, unchanged, run in both modes.
-
-Sreelakshmi owns this file.
-
-If this file differs between the two runs it stops being evidence.
-Same bytes, same commands, different outcome.
-
-    HOP 1  steal the model   GET model-store:8080/models/llama-guard.bin
-    HOP 2  read the database SELECT * FROM inference_logs LIMIT 5
-    HOP 3  reach a peer      POST worker:8080/run
-
-Print one line per hop, then: hops_attempted=3 hops_succeeded=N
-Prove the theft with the SHA-256 of the retrieved file, not a status code.
-
 #!/usr/bin/env python3
 """
 attack.py — Zero Trust Demo: lateral movement simulation
+
+Sreelakshmi owns this file.
 
 Plays the role of an attacker who has already compromised one container
 in the cluster and now tries to move laterally: steal the model file,
@@ -29,6 +17,13 @@ RUN THIS UNCHANGED AGAINST BOTH STACKS:
 This file must never branch on "which mode am I in" — the whole point of
 the submission is that identical bytes produce a different, correctly
 enforced outcome depending on which compose stack they're pointed at.
+
+    HOP 1  steal the model   GET model-store:8080/models/llama-guard.bin
+    HOP 2  read the database SELECT * FROM inference_logs LIMIT 5
+    HOP 3  reach a peer      POST worker:8080/run
+
+Print one line per hop, then: hops_attempted=3 hops_succeeded=N
+Prove the theft with the SHA-256 of the retrieved file, not a status code.
 
 Usage:
     python3 attack.py
@@ -180,7 +175,7 @@ def hop2_read_database() -> HopResult:
     except Exception as e:
         # Expected Mode B outcome: the attacker container isn't on the DB's
         # network at all, so this is a connection-level failure, not an
-        # application-level 403 — matches the brief's sample output exactly.
+        # application-level 403 — matches the brief's exact sample output.
         log_hop(2, "postgres", "SELECT inference_logs", "BLOCKED  no route to host")
         return HopResult("postgres", "read-db", False, str(e).strip())
 
