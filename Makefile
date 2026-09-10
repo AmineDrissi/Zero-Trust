@@ -1,4 +1,5 @@
 .PHONY: baseline zt demo clean
+
 # Mode A: bring up the flat/unchecked setup, run the attack, tear down.
 baseline:
 	@echo ""

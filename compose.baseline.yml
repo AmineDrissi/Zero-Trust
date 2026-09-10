@@ -1,0 +1,95 @@
+# Mode A - the "before" picture.
+# One flat network. Every service can reach every other service. No
+# identity, no policy check, anywhere. This is deliberately insecure: it
+# exists so the attack script can succeed against it, on purpose.
+name: zt-baseline
+
+networks:
+  flat:
+
+services:
+  gateway:
+    build:
+      context: .
+      dockerfile: services/gateway/Dockerfile
+    platform: linux/amd64
+    networks: [flat]
+    ports:
+      # Change the left-hand number if 8000 is already taken on your machine.
+      - "${GATEWAY_PORT:-8000}:8000"
+    environment:
+      ENFORCE_POLICY: "false"
+      WORKER_URL: "http://worker:8080"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/healthz')"]
+      interval: 3s
+      timeout: 2s
+      retries: 15
+    depends_on:
+      worker:
+        condition: service_healthy
+
+  worker:
+    build:
+      context: .
+      dockerfile: services/worker/Dockerfile
+    platform: linux/amd64
+    networks: [flat]
+    environment:
+      ENFORCE_POLICY: "false"
+      MODEL_STORE_URL: "http://model-store:8080"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/healthz')"]
+      interval: 3s
+      timeout: 2s
+      retries: 15
+    depends_on:
+      model-store:
+        condition: service_healthy
+
+  model-store:
+    build:
+      context: .
+      dockerfile: services/model-store/Dockerfile
+    platform: linux/amd64
+    networks: [flat]
+    environment:
+      ENFORCE_POLICY: "false"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/healthz')"]
+      interval: 3s
+      timeout: 2s
+      retries: 15
+
+  db:
+    image: postgres:16
+    networks: [flat]
+    environment:
+      POSTGRES_PASSWORD: demo
+      POSTGRES_DB: ztdemo
+    volumes:
+      - ./services/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 2s
+      retries: 15
+
+  # Not started by `up`; the Makefile runs this on demand with
+  # `docker compose run --rm attacker` once the four services above are
+  # healthy, so its exit code and log map to one clean attack run.
+  attacker:
+    build:
+      context: .
+      dockerfile: attack/Dockerfile
+    platform: linux/amd64
+    networks: [flat]
+    environment:
+      MODEL_STORE_URL: "http://model-store:8080"
+      WORKER_URL: "http://worker:8080"
+      POSTGRES_HOST: "db"
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB: "ztdemo"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "demo"
+    profiles: ["attack"]

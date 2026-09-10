@@ -1,0 +1,105 @@
+# Mode B - the "after" picture. Identical services and identical attack
+# script to compose.baseline.yml. What changes:
+#
+#   1. Networks are split so only allowed pairs share a network at all
+#      (gateway<->worker, worker<->model-store, worker<->db).
+#   2. gateway/worker/model-store now enforce Ishtiaq's policy check
+#      (ENFORCE_POLICY=true) on every incoming request, using the caller
+#      identity from ztlib/identity.py.
+#
+# The attacker is deliberately placed ON the model-store and worker
+# networks (net_worker_store, net_gw_worker) - it CAN reach them at the
+# network layer. What stops it is the identity/policy check inside those
+# services, which is the actual point of zero trust: network segmentation
+# alone is not the control. It is NOT on net_worker_db, so the database
+# hop fails at the network layer instead, since raw Postgres has no
+# app-level policy hook of its own in this prototype.
+name: zt-zerotrust
+
+networks:
+  net_gw_worker:
+  net_worker_store:
+  net_worker_db:
+
+services:
+  gateway:
+    build:
+      context: .
+      dockerfile: services/gateway/Dockerfile
+    platform: linux/amd64
+    networks: [net_gw_worker]
+    ports:
+      - "${GATEWAY_PORT:-8000}:8000"
+    environment:
+      ENFORCE_POLICY: "true"
+      WORKER_URL: "http://worker:8080"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/healthz')"]
+      interval: 3s
+      timeout: 2s
+      retries: 15
+    depends_on:
+      worker:
+        condition: service_healthy
+
+  worker:
+    build:
+      context: .
+      dockerfile: services/worker/Dockerfile
+    platform: linux/amd64
+    networks: [net_gw_worker, net_worker_store, net_worker_db]
+    environment:
+      ENFORCE_POLICY: "true"
+      MODEL_STORE_URL: "http://model-store:8080"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/healthz')"]
+      interval: 3s
+      timeout: 2s
+      retries: 15
+    depends_on:
+      model-store:
+        condition: service_healthy
+
+  model-store:
+    build:
+      context: .
+      dockerfile: services/model-store/Dockerfile
+    platform: linux/amd64
+    networks: [net_worker_store]
+    environment:
+      ENFORCE_POLICY: "true"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/healthz')"]
+      interval: 3s
+      timeout: 2s
+      retries: 15
+
+  db:
+    image: postgres:16
+    networks: [net_worker_db]
+    environment:
+      POSTGRES_PASSWORD: demo
+      POSTGRES_DB: ztdemo
+    volumes:
+      - ./services/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 2s
+      retries: 15
+
+  attacker:
+    build:
+      context: .
+      dockerfile: attack/Dockerfile
+    platform: linux/amd64
+    networks: [net_worker_store, net_gw_worker]
+    environment:
+      MODEL_STORE_URL: "http://model-store:8080"
+      WORKER_URL: "http://worker:8080"
+      POSTGRES_HOST: "db"
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB: "ztdemo"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "demo"
+    profiles: ["attack"]
