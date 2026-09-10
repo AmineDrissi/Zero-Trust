@@ -78,7 +78,7 @@ ATTEMPT_TOKEN_REPLAY = os.environ.get("ATTEMPT_TOKEN_REPLAY", "0") == "1"
 
 # Make ztlib importable the same way tests/test_identity.py does, in case
 # ATTEMPT_TOKEN_REPLAY is enabled.
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 
 @dataclass
