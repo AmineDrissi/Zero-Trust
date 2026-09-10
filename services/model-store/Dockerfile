@@ -6,6 +6,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY services/model-store/ .
 COPY ztlib ./ztlib
+COPY policy.yaml
 
 # Never commit a real model file (GitHub rejects >100MB anyway). This fake
 # 4MB blob of random bytes fingerprints exactly like a real one, which is
