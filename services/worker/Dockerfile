@@ -6,6 +6,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY services/worker/ .
 COPY ztlib ./ztlib
-COPY policy.yaml
-
+COPY policy.yaml .  
 CMD ["python", "main.py"]
