@@ -76,9 +76,14 @@ LOOT_DIR = os.environ.get("LOOT_DIR", "evidence/loot")
 # or mounts ztlib/ alongside attack/ — confirm with Abubakar). Off by default.
 ATTEMPT_TOKEN_REPLAY = os.environ.get("ATTEMPT_TOKEN_REPLAY", "0") == "1"
 
-# Make ztlib importable the same way tests/test_identity.py does, in case
-# ATTEMPT_TOKEN_REPLAY is enabled.
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+# Make ztlib importable in case ATTEMPT_TOKEN_REPLAY is enabled. Two layouts
+# have to work: inside the attacker image ztlib sits next to attack.py at
+# /app/ztlib, while in the repo it is one level up at <repo>/ztlib.
+_here = Path(__file__).resolve().parent
+for _candidate in (_here, _here.parent):
+    if (_candidate / "ztlib").is_dir():
+        sys.path.insert(0, str(_candidate))
+        break
 
 
 @dataclass

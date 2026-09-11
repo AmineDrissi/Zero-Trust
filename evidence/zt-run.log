@@ -1,0 +1,209 @@
+ Image zt-zerotrust-model-store Building 
+ Image zt-zerotrust-gateway Building 
+ Image zt-zerotrust-worker Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.66kB done
+#1 DONE 0.0s
+
+#2 [gateway internal] load build definition from Dockerfile
+#2 transferring dockerfile: 405B 0.0s done
+#2 DONE 0.0s
+
+#3 [worker internal] load build definition from Dockerfile
+#3 transferring dockerfile: 267B 0.0s done
+#3 DONE 0.0s
+
+#4 [model-store internal] load build definition from Dockerfile
+#4 transferring dockerfile: 606B 0.0s done
+#4 DONE 0.0s
+
+#5 [model-store internal] load metadata for docker.io/library/python:3.12-slim
+#5 DONE 1.0s
+
+#6 [worker internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [worker internal] load build context
+#7 transferring context: 408B 0.0s done
+#7 DONE 0.0s
+
+#8 [gateway internal] load build context
+#8 transferring context: 413B 0.0s done
+#8 DONE 0.0s
+
+#9 [gateway 1/7] FROM docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea
+#9 resolve docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea 0.1s done
+#9 DONE 0.1s
+
+#10 [model-store internal] load build context
+#10 transferring context: 433B done
+#10 DONE 0.0s
+
+#11 [worker 3/7] COPY services/worker/requirements.txt .
+#11 CACHED
+
+#12 [worker 5/7] COPY services/worker/ .
+#12 CACHED
+
+#13 [worker 6/7] COPY ztlib ./ztlib
+#13 CACHED
+
+#14 [worker 4/7] RUN pip install --no-cache-dir -r requirements.txt
+#14 CACHED
+
+#15 [worker 7/7] COPY policy.yaml .
+#15 CACHED
+
+#16 [gateway 5/7] COPY services/gateway/ .
+#16 CACHED
+
+#17 [gateway 6/7] COPY ztlib ./ztlib
+#17 CACHED
+
+#18 [gateway 4/7] RUN pip install --no-cache-dir -r requirements.txt
+#18 CACHED
+
+#19 [gateway 3/7] COPY services/gateway/requirements.txt .
+#19 CACHED
+
+#20 [model-store 2/7] WORKDIR /app
+#20 CACHED
+
+#21 [model-store 4/8] RUN pip install --no-cache-dir -r requirements.txt
+#21 CACHED
+
+#22 [model-store 6/8] COPY ztlib ./ztlib
+#22 CACHED
+
+#23 [model-store 7/8] COPY policy.yaml .
+#23 CACHED
+
+#24 [model-store 3/8] COPY services/model-store/requirements.txt .
+#24 CACHED
+
+#25 [model-store 5/8] COPY services/model-store/ .
+#25 CACHED
+
+#26 [gateway 7/7] COPY policy.yaml .
+#26 CACHED
+
+#27 [model-store 8/8] RUN mkdir -p /models && python -c "import os; open('/models/llama-guard.bin','wb').write(os.urandom(4*1024*1024))"
+#27 CACHED
+
+#28 [worker] exporting to image
+#28 exporting layers done
+#28 exporting manifest sha256:d2e5331ee76e83544bdf8ed6b1c78b2a880d2dfa0e02b4fea9ec0aaccc39b438 done
+#28 exporting config sha256:dfe55072595978fbb3417c512459ed2be3b049ab7221c703e57376f44314b57b done
+#28 exporting attestation manifest sha256:468f326d4361c777ebca2fa5a3cdb950cf0211dd8fb40d2a25f1e21c62895782 0.0s done
+#28 exporting manifest list sha256:12cddcc273546a1d791fcfad1b035089df856e1a6ae7c0255e9656a5712d4880
+#28 exporting manifest list sha256:12cddcc273546a1d791fcfad1b035089df856e1a6ae7c0255e9656a5712d4880 0.0s done
+#28 naming to docker.io/library/zt-zerotrust-worker:latest 0.0s done
+#28 unpacking to docker.io/library/zt-zerotrust-worker:latest 0.0s done
+#28 DONE 0.2s
+
+#29 [gateway] exporting to image
+#29 exporting layers done
+#29 exporting manifest sha256:dcc07d6db153fd9eeb00e2be2b59c2e1cd0188eb3bd452efd1065304ac4f73c8 done
+#29 exporting config sha256:5fe3aa661d054ea64f537b0c6cb096ee8441254ce8099dd0948f6bf8aabd3712 done
+#29 exporting attestation manifest sha256:19a4b62d9365f58e8e0a2cc0ad365eeaeb0549a62f3b02a7962a1cf2721779db 0.0s done
+#29 exporting manifest list sha256:6fb2cffe741f2491366aaa06bf87355ad4c5efb0939dab28f553216717029404 0.0s done
+#29 naming to docker.io/library/zt-zerotrust-gateway:latest 0.0s done
+#29 unpacking to docker.io/library/zt-zerotrust-gateway:latest 0.0s done
+#29 DONE 0.2s
+
+#30 [model-store] exporting to image
+#30 exporting layers 0.0s done
+#30 exporting manifest sha256:b16ae4c8764cf05b5cdee0661b6c5d47dba765940db456086315ad132bbd9c61 done
+#30 exporting config sha256:a915a702d10bff200039a077a563525ae939f015167f5622edaf20ddeabc9411 0.0s done
+#30 exporting attestation manifest sha256:e7debb2834d88ffeaf4d45724df3abdebe7b2dbab01b21914e6c89e06191c862 0.0s done
+#30 exporting manifest list sha256:98acc3bf93c6bc390ee08b1944a5f3384bdbc15a513a658c3e5a2c3bb9c265c9 0.0s done
+#30 naming to docker.io/library/zt-zerotrust-model-store:latest done
+#30 unpacking to docker.io/library/zt-zerotrust-model-store:latest 0.0s done
+#30 DONE 0.3s
+
+#31 [worker] resolving provenance for metadata file
+#31 DONE 0.1s
+
+#32 [gateway] resolving provenance for metadata file
+#32 DONE 0.1s
+
+#33 [model-store] resolving provenance for metadata file
+#33 DONE 0.0s
+ Image zt-zerotrust-worker Built 
+ Image zt-zerotrust-gateway Built 
+ Image zt-zerotrust-model-store Built 
+ Network zt-zerotrust_net_gw_worker Creating 
+ Network zt-zerotrust_net_worker_store Creating 
+ Network zt-zerotrust_net_worker_db Creating 
+ Network zt-zerotrust_net_worker_store Creating 
+ Network zt-zerotrust_net_worker_db Creating 
+ Network zt-zerotrust_net_gw_worker Creating 
+ Network zt-zerotrust_net_worker_store Created 
+ Network zt-zerotrust_net_worker_store Created 
+ Container zt-zerotrust-model-store-1 Creating 
+ Network zt-zerotrust_net_gw_worker Created 
+ Network zt-zerotrust_net_gw_worker Created 
+ Container zt-zerotrust-model-store-1 Created 
+ Network zt-zerotrust_net_worker_db Created 
+ Network zt-zerotrust_net_worker_db Created 
+ Container zt-zerotrust-worker-1 Creating 
+ Container zt-zerotrust-db-1 Creating 
+ Container zt-zerotrust-worker-1 Created 
+ Container zt-zerotrust-gateway-1 Creating 
+ Container zt-zerotrust-db-1 Created 
+ Container zt-zerotrust-gateway-1 Created 
+ Container zt-zerotrust-db-1 Starting 
+ Container zt-zerotrust-model-store-1 Starting 
+ Container zt-zerotrust-db-1 Started 
+ Container zt-zerotrust-model-store-1 Started 
+ Container zt-zerotrust-model-store-1 Waiting 
+ Container zt-zerotrust-model-store-1 Healthy 
+ Container zt-zerotrust-worker-1 Starting 
+ Container zt-zerotrust-worker-1 Started 
+ Container zt-zerotrust-worker-1 Waiting 
+ Container zt-zerotrust-worker-1 Healthy 
+ Container zt-zerotrust-gateway-1 Starting 
+ Container zt-zerotrust-gateway-1 Started 
+ Container zt-zerotrust-db-1 Waiting 
+ Container zt-zerotrust-gateway-1 Waiting 
+ Container zt-zerotrust-worker-1 Waiting 
+ Container zt-zerotrust-model-store-1 Waiting 
+ Container zt-zerotrust-worker-1 Healthy 
+ Container zt-zerotrust-db-1 Healthy 
+ Container zt-zerotrust-model-store-1 Healthy 
+ Container zt-zerotrust-gateway-1 Healthy 
+ Container zt-zerotrust-attacker-run-5b322cd741e6 Creating 
+ Container zt-zerotrust-attacker-run-5b322cd741e6 Created 
+# Zero Trust demo — attack.py
+# model-store: http://model-store:8080/models/llama-guard.bin
+# worker:      http://worker:8080/run
+# postgres:    db:5432/ztdemo
+
+[HOP 1] model-store  GET /models/llama-guard.bin  -> 403 DENIED  rule=<none> reason=no_matching_rule
+[HOP 2] postgres     SELECT inference_logs        -> BLOCKED  no route to host
+[HOP 3] worker       POST /run                    -> 403 DENIED  rule=<none> reason=no_matching_rule
+
+hops_attempted=3  hops_succeeded=0
+ Container zt-zerotrust-db-1 Stopping 
+ Container zt-zerotrust-gateway-1 Stopping 
+ Container zt-zerotrust-db-1 Stopped 
+ Container zt-zerotrust-db-1 Removing 
+ Container zt-zerotrust-db-1 Removed 
+ Container zt-zerotrust-gateway-1 Stopped 
+ Container zt-zerotrust-gateway-1 Removing 
+ Container zt-zerotrust-gateway-1 Removed 
+ Container zt-zerotrust-worker-1 Stopping 
+ Container zt-zerotrust-worker-1 Stopped 
+ Container zt-zerotrust-worker-1 Removing 
+ Container zt-zerotrust-worker-1 Removed 
+ Container zt-zerotrust-model-store-1 Stopping 
+ Container zt-zerotrust-model-store-1 Stopped 
+ Container zt-zerotrust-model-store-1 Removing 
+ Container zt-zerotrust-model-store-1 Removed 
+ Network zt-zerotrust_net_worker_store Removing 
+ Network zt-zerotrust_net_worker_db Removing 
+ Network zt-zerotrust_net_gw_worker Removing 
+ Network zt-zerotrust_net_worker_store Removed 
+ Network zt-zerotrust_net_gw_worker Removed 
+ Network zt-zerotrust_net_worker_db Removed 

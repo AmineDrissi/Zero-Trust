@@ -1,0 +1,205 @@
+ Image zt-baseline-worker Building 
+ Image zt-baseline-model-store Building 
+ Image zt-baseline-gateway Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.65kB done
+#1 DONE 0.0s
+
+#2 [model-store internal] load build definition from Dockerfile
+#2 transferring dockerfile: 606B done
+#2 DONE 0.0s
+
+#3 [gateway internal] load build definition from Dockerfile
+#3 transferring dockerfile: 405B 0.0s done
+#3 DONE 0.0s
+
+#4 [worker internal] load build definition from Dockerfile
+#4 transferring dockerfile: 267B done
+#4 DONE 0.0s
+
+#5 [worker internal] load metadata for docker.io/library/python:3.12-slim
+#5 DONE 1.0s
+
+#6 [gateway internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [worker internal] load build context
+#7 transferring context: 408B done
+#7 DONE 0.0s
+
+#8 [gateway internal] load build context
+#8 transferring context: 413B done
+#8 DONE 0.0s
+
+#9 [gateway 1/8] FROM docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea
+#9 resolve docker.io/library/python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea 0.0s done
+#9 DONE 0.0s
+
+#10 [model-store internal] load build context
+#10 transferring context: 433B done
+#10 DONE 0.0s
+
+#11 [gateway 4/7] RUN pip install --no-cache-dir -r requirements.txt
+#11 CACHED
+
+#12 [gateway 3/7] COPY services/gateway/requirements.txt .
+#12 CACHED
+
+#13 [gateway 6/7] COPY ztlib ./ztlib
+#13 CACHED
+
+#14 [gateway 5/7] COPY services/gateway/ .
+#14 CACHED
+
+#15 [worker 3/7] COPY services/worker/requirements.txt .
+#15 CACHED
+
+#16 [worker 5/7] COPY services/worker/ .
+#16 CACHED
+
+#17 [worker 6/7] COPY ztlib ./ztlib
+#17 CACHED
+
+#18 [worker 4/7] RUN pip install --no-cache-dir -r requirements.txt
+#18 CACHED
+
+#19 [gateway 7/7] COPY policy.yaml .
+#19 CACHED
+
+#20 [worker 7/7] COPY policy.yaml .
+#20 CACHED
+
+#21 [model-store 4/8] RUN pip install --no-cache-dir -r requirements.txt
+#21 CACHED
+
+#22 [model-store 5/8] COPY services/model-store/ .
+#22 CACHED
+
+#23 [model-store 7/8] COPY policy.yaml .
+#23 CACHED
+
+#24 [model-store 3/8] COPY services/model-store/requirements.txt .
+#24 CACHED
+
+#25 [model-store 6/8] COPY ztlib ./ztlib
+#25 CACHED
+
+#26 [model-store 2/8] WORKDIR /app
+#26 CACHED
+
+#27 [model-store 8/8] RUN mkdir -p /models && python -c "import os; open('/models/llama-guard.bin','wb').write(os.urandom(4*1024*1024))"
+#27 CACHED
+
+#28 [gateway] exporting to image
+#28 exporting layers done
+#28 exporting manifest sha256:089151d4e223afefc9d751f5bc2f2db460d4e79c5b7a79b0acfc01743e031875 0.0s done
+#28 exporting config sha256:c3f71436f6220783fb17816b431c1eb6b5faf6e0d14377b9b81d79822117b366 0.0s done
+#28 exporting attestation manifest sha256:9094ea86b8cac4293d2b7c8d7ed1964cb6a1fbb0828b8888f93a09b212ff33f6 0.0s done
+#28 exporting manifest list sha256:4e85a36f11b845a79320c007b20f802880d256891abfa062c9f641520fb4774d
+#28 exporting manifest list sha256:4e85a36f11b845a79320c007b20f802880d256891abfa062c9f641520fb4774d 0.0s done
+#28 naming to docker.io/library/zt-baseline-gateway:latest done
+#28 unpacking to docker.io/library/zt-baseline-gateway:latest 0.0s done
+#28 DONE 0.2s
+
+#29 [model-store] exporting to image
+#29 exporting layers done
+#29 exporting manifest sha256:80fa913c1d60462180101ace17de0ecb12a0242f319a78f78ecc59ceb5459fb7 0.0s done
+#29 exporting config sha256:431c0a59457b0e6b8b4316112b6544fd646ad14c24a7765ae0ffc7c28c48e13a 0.0s done
+#29 exporting attestation manifest sha256:b304c4f025c76f7d62eef0071df979992e34b2c92044d4890601558ffc179cc9 0.0s done
+#29 exporting manifest list sha256:30eb1090912084ac3fdb742255b7e52ab4d1a6201fe777367a85ef7ba6449444 0.0s done
+#29 naming to docker.io/library/zt-baseline-model-store:latest done
+#29 unpacking to docker.io/library/zt-baseline-model-store:latest 0.0s done
+#29 DONE 0.2s
+
+#30 [worker] exporting to image
+#30 exporting layers done
+#30 exporting manifest sha256:e7723c7ed05c7094a9ef15bd8d38aa0b3db22200dff0533b9299dfbd7519e39e 0.0s done
+#30 exporting config sha256:0aff88ba7282ed6b84f0d06b9d95030d32bdd3d86eade4dfec5e0343759a25b1 0.0s done
+#30 exporting attestation manifest sha256:48c9244bca3168f90804896ff132424c796f3f96eef97a0f01d213594abdb36c 0.0s done
+#30 exporting manifest list sha256:2828dce5d96d6da7de8aead2ee1e157f9177a8dc8543c051184f4f17a27a4d25 0.0s done
+#30 naming to docker.io/library/zt-baseline-worker:latest done
+#30 unpacking to docker.io/library/zt-baseline-worker:latest 0.0s done
+#30 DONE 0.2s
+
+#31 [gateway] resolving provenance for metadata file
+#31 DONE 0.1s
+
+#32 [worker] resolving provenance for metadata file
+#32 DONE 0.0s
+
+#33 [model-store] resolving provenance for metadata file
+#33 DONE 0.0s
+ Image zt-baseline-model-store Built 
+ Image zt-baseline-worker Built 
+ Image zt-baseline-gateway Built 
+ Network zt-baseline_flat Creating 
+ Network zt-baseline_flat Creating 
+ Network zt-baseline_flat Created 
+ Network zt-baseline_flat Created 
+ Container zt-baseline-db-1 Creating 
+ Container zt-baseline-model-store-1 Creating 
+ Container zt-baseline-model-store-1 Created 
+ Container zt-baseline-worker-1 Creating 
+ Container zt-baseline-db-1 Created 
+ Container zt-baseline-worker-1 Created 
+ Container zt-baseline-gateway-1 Creating 
+ Container zt-baseline-gateway-1 Created 
+ Container zt-baseline-model-store-1 Starting 
+ Container zt-baseline-db-1 Starting 
+ Container zt-baseline-model-store-1 Started 
+ Container zt-baseline-model-store-1 Waiting 
+ Container zt-baseline-db-1 Started 
+ Container zt-baseline-model-store-1 Healthy 
+ Container zt-baseline-worker-1 Starting 
+ Container zt-baseline-worker-1 Started 
+ Container zt-baseline-worker-1 Waiting 
+ Container zt-baseline-worker-1 Healthy 
+ Container zt-baseline-gateway-1 Starting 
+ Container zt-baseline-gateway-1 Started 
+ Container zt-baseline-gateway-1 Waiting 
+ Container zt-baseline-worker-1 Waiting 
+ Container zt-baseline-model-store-1 Waiting 
+ Container zt-baseline-db-1 Waiting 
+ Container zt-baseline-model-store-1 Healthy 
+ Container zt-baseline-worker-1 Healthy 
+ Container zt-baseline-db-1 Healthy 
+ Container zt-baseline-gateway-1 Healthy 
+ Container zt-baseline-attacker-run-b3c5219f1d36 Creating 
+ Container zt-baseline-attacker-run-b3c5219f1d36 Created 
+# Zero Trust demo — attack.py
+# model-store: http://model-store:8080/models/llama-guard.bin
+# worker:      http://worker:8080/run
+# postgres:    db:5432/ztdemo
+
+[HOP 1] model-store  GET /models/llama-guard.bin  -> 200 OK  STOLEN  sha256=3671e344... (4.0 MB)
+          full sha256: 3671e34407597de09b663934da170cb29de50058daca752575cc46a01d2c11a7
+          saved to:    evidence/loot/llama-guard.bin
+          -> compare this hash against the model store's own sha256 of the same file (Task 2 proof).
+[HOP 2] postgres     SELECT inference_logs        -> 5 rows  LEAKED
+          (1, 'is this email spam?', 'spam', datetime.datetime(2026, 9, 10, 20, 38, 26, 626740))
+          (2, 'describe this image', 'a cat sitting on a windowsill', datetime.datetime(2026, 9, 10, 20, 38, 26, 626740))
+          (3, 'summarize this document', 'quarterly revenue increased 12 percent', datetime.datetime(2026, 9, 10, 20, 38, 26, 626740))
+          (4, 'translate hello to french', 'bonjour', datetime.datetime(2026, 9, 10, 20, 38, 26, 626740))
+          (5, 'classify sentiment: great product!', 'positive', datetime.datetime(2026, 9, 10, 20, 38, 26, 626740))
+[HOP 3] worker       POST /run                    -> 200 OK  REACHED
+
+hops_attempted=3  hops_succeeded=3
+ Container zt-baseline-db-1 Stopping 
+ Container zt-baseline-gateway-1 Stopping 
+ Container zt-baseline-db-1 Stopped 
+ Container zt-baseline-db-1 Removing 
+ Container zt-baseline-db-1 Removed 
+ Container zt-baseline-gateway-1 Stopped 
+ Container zt-baseline-gateway-1 Removing 
+ Container zt-baseline-gateway-1 Removed 
+ Container zt-baseline-worker-1 Stopping 
+ Container zt-baseline-worker-1 Stopped 
+ Container zt-baseline-worker-1 Removing 
+ Container zt-baseline-worker-1 Removed 
+ Container zt-baseline-model-store-1 Stopping 
+ Container zt-baseline-model-store-1 Stopped 
+ Container zt-baseline-model-store-1 Removing 
+ Container zt-baseline-model-store-1 Removed 
+ Network zt-baseline_flat Removing 
+ Network zt-baseline_flat Removed 
